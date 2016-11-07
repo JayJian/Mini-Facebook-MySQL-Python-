@@ -1,0 +1,43 @@
+<!doctype html>
+<li><a href='/'>Home</a></li>
+
+<h2>Please choose a specific album to browse</h2>
+{% if message %}
+  <h4>{{message}}!</h4>
+{% endif %}
+
+<h2>Your albums:</h2>
+{% if albums %}
+  {%for album in albums%}
+  <li>{{album[0]}}</li>
+  {%endfor%}
+{%endif%}
+
+<form method="post" enctype="multipart/form-data" action="/albumphoto">
+    <label for="album_name">Select album from the above list:</label>
+    <input type="text" name="album_name" required='true' /><br />
+    <input type="submit" value="SELECT" />
+</form>
+
+{% if photos %}
+<h2>Photos:</h2>
+<h4>Click on photo to view photo details and add tags:</h4>
+  <ul>
+    {% for photo in photos %}
+    <form method="POST" enctype="multipart/form-data" action="/tagpage">
+      <input type='hidden' name='picture_id' value='{{photo[1]}}'/>
+      <input name='photo_data' type='image' src='data:image/png;base64, {{photo[0]}}' />
+    </form>
+    <p>Caption: {{photo[2]}}</p>
+  </ul>
+  {%endfor%}
+{% endif %}
+
+<p>Click the tag to browse photos with the tag:</p>
+{% if yourTags %}
+  {%for tag in yourTags%}
+  <form method="POST" enctype="multipart/form-data" action="/getphoto">
+    <input name='tag' type='submit' value={{tag[0]}} />
+  </form>
+  {%endfor%}
+{%endif%}

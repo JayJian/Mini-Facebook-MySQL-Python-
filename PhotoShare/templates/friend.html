@@ -1,0 +1,36 @@
+<!doctype html>
+
+<li><a href='/'>Home</a></li>
+
+{% if message %}
+  <h3>{{message}}</h3>
+{% endif %}
+
+<form method="post" action="/addFriend"/>
+    <label for="user2_email">Please enter the friend's email:</label>
+    <input type="email" name="user2_email" /><br />
+    <input type="submit" value="Add a friend">
+</form>
+
+<form method="post" action="/delFriend"/>
+    <label for="del_email">Please enter the friend's email:</label>
+    <input type="email" name="del_email" /><br />
+    <input type="submit" value="delele a friend">
+</form>
+
+<h2>Your Friends List:</h2>
+{% if friendlists %}
+  {%for friend in friendlists%}
+  <form method="POST" enctype="multipart/form-data" action="/getfriendphoto">
+    <input name='friendemail' type='submit' value={{friend[0]}} />
+  </form>
+  {%endfor%}
+{%endif%}
+
+<h2>All Users in Website:</h2>
+<h3>(Ordered by User's Popularity most to least)</h3>
+{% if allusers %}
+  {%for user in allusers%}
+  <li>{{user[0]}}</li>
+  {%endfor%}
+{%endif%}

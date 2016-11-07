@@ -1,0 +1,61 @@
+<!-- author ben lawson (balawson@bu.edu) -->
+<!doctype html>
+
+{% if message %}
+  <h4>{{message}}!</h4>
+{% endif %}
+<title>Photoshare</title>
+{% if name %}
+  <h1>Hello {{ name }}!</h1>
+{% endif %}
+
+{% if message is none %}
+  <p>You should <a href='/login'>login!</a></p>
+{% else %}
+  <p> Go to <a href='/profile'>profile?</a></p>
+{% endif %}
+
+<ul>
+<li><a href='/friends'>My Friends</a></li>
+<li><a href='/createalbum'>Album Management</a></li>
+<li><a href='/upload'>Upload a photo</a> </li>
+<li><a href='/albumphoto'>Browse my photos by album and tag</a></li>
+<li><a href='/youmayalsolike'>You may also like</a></li>
+<li><a href='/'>Home</a></li>
+<li><a href='/logout'>Logout</a></li>
+</ul>
+
+{% if message1 %}
+  <h4>{{message1}}!</h4>
+{% endif %}
+
+<form method="POST" enctype="multipart/form-data" action="/search">
+  <p><label for="seaTag">Tags to search:</label></p>
+  <p><input type="text" name="serString" required="true"/>  <input type="submit" value="Search"/></p>
+</form>
+
+<p>Most 10 Popular Tags: </p>
+<p>(High to Low)</p>
+
+<p>Click the tag to browse photos with the tag:</p>
+{% if mostTags %}
+  {%for tag in mostTags%}
+  <form method="POST" enctype="multipart/form-data" action="/getphoto">
+    <input name='tag' type='submit' value={{tag[0]}} />
+  </form>
+  {%endfor%}
+{%endif%}
+
+{% if photos %}
+<h2>Photos:</h2>
+<h4>Click on photo to comment and like</h4>
+  <ul>
+    {% for photo in photos %}
+    <form method="POST" enctype="multipart/form-data" action="/comment">
+      <input type='hidden' name='picture_id' value='{{photo[1]}}'/>
+      <input name='photo_data' type='image' src='data:image/png;base64, {{photo[0]}}' />
+    </form>
+    <p>Caption: {{photo[2]}}</p>
+    {% endfor %}
+  </ul>
+{% endif %}

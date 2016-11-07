@@ -1,0 +1,35 @@
+<!-- author ben lawson (balawson@bu.edu) -->
+<li><a href='/'>Home</a></li>
+{% if message %}
+  <h4>{{message}}!</h4>
+{% endif %}
+
+<head>
+    <title>Album Management</title>
+</head>
+    <body>
+        <div class="title">
+            <h1>Album Management</h1>
+        </div>
+            <h4>Create a new album:</h4>
+            <form method="post" enctype="multipart/form-data" action="/createalbum">
+                <label for="album_name">Please enter name for the ablum:</label>
+                <input type="text" name="album_name" required='true' /><br />
+                <input type="submit" value="Create" />
+            </form>
+
+
+            <h4>Delete an album:</h4>
+            <form method="post" enctype="multipart/form-data" action="/delalbum">
+                <label for="album_name">Please enter the album to delete:</label>
+                <input type="text" name="album_name" required='true' /><br />
+                <input type="submit" value="Delete" />
+            </form>
+    </body>
+
+<h2>Your albums List:</h2>
+{% if albums %}
+  {%for album in albums%}
+  <li>{{album[0]}}</li>
+  {%endfor%}
+{%endif%}

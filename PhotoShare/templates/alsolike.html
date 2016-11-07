@@ -1,0 +1,11 @@
+
+<h2>You may also like these photos according to your photo tags!!!</h2>
+
+{% if photos %}
+<ul>
+    {% for photo in photos %}
+    <img src='data:image/png;base64, {{photo[0]}}' width="300" height="200"/>
+    <P>Caption: {{photo[2]}}</P>
+    {% endfor %}
+</ul>
+{% endif %}

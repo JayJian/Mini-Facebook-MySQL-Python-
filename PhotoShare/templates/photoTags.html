@@ -1,0 +1,20 @@
+<!doctype html>
+
+{% if message %}
+  <h4>Photos with tag: {{message}}</h4>
+{% endif %}
+
+{% if photos %}
+<h4>Click on photo to comment and like</h4>
+  <ul>
+    {% for photo in photos %}
+    <form method="POST" enctype="multipart/form-data" action="/comment">
+      <input type='hidden' name='picture_id' value='{{photo[1]}}'/>
+      <input name='photo_data' type='image' src='data:image/png;base64, {{photo[0]}}' />
+    </form>
+    <p>Caption: {{photo[2]}}</p>
+    {% endfor %}
+  </ul>
+{% endif %}
+
+<li><a href='/'>Home</a></li>

@@ -1,0 +1,53 @@
+<!doctype html>
+{% if message %}
+  <h4>{{message}}!</h4>
+{% endif %}
+
+{% if photos %}
+<h2>Photo:</h2>
+    <ul>
+    {% for photo in photos %}
+        <p><img src='data:image/png;base64, {{photo[0]}}'/></p>
+        <p>Caption: {{photo[1]}}</p>
+
+    {% endfor %}
+    </ul>
+{% endif %}
+
+<form method="post" enctype="multipart/form-data" action="/like">
+  <input type="hidden" name="picture_id" value='{{picId}}' />
+  <input type="submit" value="Like" />
+</form>
+
+<li>This photo has {{likes}} likes!</li>
+
+<h4>Tags:</h4>
+{% if tags %}
+  {%for tag in tags%}
+  <li>{{tag[0]}}</li>
+  {%endfor%}
+{%endif%}
+
+<h3>Likers:</h3>
+{% if likers %}
+  {%for liker in likers%}
+    <li>{{liker[0]}}</li>
+  {%endfor%}
+{%endif%}
+
+<h3>Comments:</h3>
+{% if comments %}
+  {%for comment in comments%}
+    <li>{{comment[2]}} {{comment[1]}}: {{comment[0]}}</li>
+  {%endfor%}
+{%endif%}
+
+<form method="post" enctype="multipart/form-data" action="/makecomment">
+    <label for="content">Comments:</label>
+    <input type="text" name="content" required='true' /><br />
+    <input type="hidden" name="picture_id" value='{{picId}}' />
+
+    <input type="submit" value="Comment" />
+</form>
+
+<li><a href='/'>Home</a></li>

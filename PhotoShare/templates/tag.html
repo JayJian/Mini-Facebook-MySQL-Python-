@@ -1,0 +1,49 @@
+<!doctype html>
+<li><a href='/'>Home</a></li>
+
+{% if message %}
+  <h3>{{message}}</h3>
+{% endif %}
+
+{% if photos %}
+<ul>
+    {% for photo in photos %}
+    <img src='data:image/png;base64, {{photo[0]}}' width="300" height="200"/>
+    <P>Caption: {{photo[1]}}</P>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<h4>Tags:</h4>
+{% if tags %}
+  {%for tag in tags%}
+  <li>{{tag[0]}}</li>
+  {%endfor%}
+{%endif%}
+
+
+<form method="post" action="/addTag"/>
+    <label for="add_tag">Please enter the tag word:</label>
+    <label >(No space please)</label>
+    <input type="hidden" name="picture_id" value="{{picId}}" />
+    <p><input type="text" name="tag_string" />  <input type="submit" value="Add this tag "></p>
+</form>
+
+<p>Recommendations: </p>
+<p>(High to Low)</p>
+
+<p>Click the tag to browse photos with the tag:</p>
+{% if mostTags %}
+  {%for tag in mostTags%}
+  <form method="POST" enctype="multipart/form-data" action="/getphoto">
+    <input name='tag' type='submit' value={{tag[0]}} />
+  </form>
+  {%endfor%}
+{%endif%}
+
+<br></br>
+<br></br>
+<form method="post" action="/deltephoto"/>
+  <input type="hidden" name="picture_id" value="{{picId}}" />
+  <input type="submit" value="Delete this photo">
+</form>
