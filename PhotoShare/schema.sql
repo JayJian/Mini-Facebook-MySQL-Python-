@@ -8,6 +8,7 @@ CREATE TABLE Users (
   first_name VARCHAR(35),
   last_name VARCHAR(35),
   email varchar(255) UNIQUE,
+  gender varchar(35),
   password varchar(255),
   hometown VARCHAR(255),
   birthday DATE,

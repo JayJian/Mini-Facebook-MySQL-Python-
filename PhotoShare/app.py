@@ -132,13 +132,14 @@ def register_user():
 		last_name=request.form.get('last_name')
 		hometown=request.form.get('hometown')
 		birthday=request.form.get('birthday')
+		gender=request.form.get('gender')
 	except:
 		print "couldn't find all tokens" #this prints to shell, end users will not see this (all print statements go to shell)
 		return flask.redirect(flask.url_for('register'))
 	cursor = conn.cursor()
 	test =  isEmailUnique(email)
 	if test:
-		print cursor.execute("INSERT INTO Users (email, password, first_name, last_name, hometown, birthday) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')".format(email, password, first_name, last_name, hometown, birthday))
+		print cursor.execute("INSERT INTO Users (email, password, first_name, last_name, hometown, birthday, gender) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}','{6}')".format(email, password, first_name, last_name, hometown, birthday,gender))
 		conn.commit()
 		#log user in
 
@@ -180,7 +181,7 @@ def getUsersAlbums(uid):
 
 def getUsersTags(uid):
 	cursor = conn.cursor()
-	cursor.execute("SELECT t.tag_string FROM Tags t, Pictures p, Users u WHERE u.user_id='{0}' AND u.user_id=p.user_id AND p.picture_id=t.picture_id".format(uid))
+	cursor.execute("SELECT t.tag_string FROM Tags t, Pictures p, Users u WHERE u.user_id='{0}' AND u.user_id=p.user_id AND p.picture_id=t.picture_id GROUP BY t.tag_string".format(uid))
 	return cursor.fetchall()
 
 def getFriendsEmail(uid):
@@ -568,6 +569,12 @@ def getPhotosByTag(tag_string):
 	cursor.execute("SELECT p.imgdata, p.picture_id, p.caption FROM Pictures p , Tags t WHERE t.tag_string='{0}' AND t.picture_id = p.picture_id".format(tag_string))
 	return cursor.fetchall()
 
+def getMyPhotoByTag(tag_string,uid):
+	cursor = conn.cursor()
+	cursor.execute("SELECT p.imgdata, p.picture_id, p.caption FROM Pictures p , Tags t, Users u WHERE t.tag_string='{0}' AND u.user_id='{1}' AND t.picture_id = p.picture_id AND u.user_id=p.user_id".format(tag_string,uid))
+	return cursor.fetchall()
+
+
 #default page
 @app.route("/", methods=['GET'])
 def hello():
@@ -586,7 +593,7 @@ def mytagphoto():
 	if request.method=='POST':
 		uid = getUserIdFromEmail(flask_login.current_user.id)
 		tag_string=request.form.get('tag')
-		return render_template('photoTags.html', message=tag_string, photos=getMyPhotoByTag(tag_string))
+		return render_template('photoTags.html', message=tag_string, photos=getMyPhotoByTag(tag_string,uid))
 
 
 #youmayalsolike

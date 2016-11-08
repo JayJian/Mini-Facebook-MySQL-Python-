@@ -36,7 +36,7 @@
 <p>Click the tag to browse photos with the tag:</p>
 {% if yourTags %}
   {%for tag in yourTags%}
-  <form method="POST" enctype="multipart/form-data" action="/getphoto">
+  <form method="POST" enctype="multipart/form-data" action="/getmyphoto">
     <input name='tag' type='submit' value={{tag[0]}} />
   </form>
   {%endfor%}
