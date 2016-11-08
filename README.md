@@ -1,5 +1,7 @@
 # Mini-Facebook-MySQL-Python-
 
+PhotoShare: An on-line photo social network system
+
 In this project, MySQL database is used as the backend data system.  And python is used to this program.
 
 Use cases
